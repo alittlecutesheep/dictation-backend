@@ -1,0 +1,16 @@
+# 醫學詞庫：一行一詞（# 開頭為註解）。Phase 5 依臨床科別擴充。
+# STT initial_prompt（Phase 3）與潤飾 prompt（Phase 1）共用這份。
+SOAP
+CRP
+WBC
+ESR
+osteomyelitis
+OPAT
+elastomeric pump
+ceftriaxone
+vancomycin
+piperacillin-tazobactam
+cellulitis
+bacteremia
+empirical antibiotics
+de-escalation
