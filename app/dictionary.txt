@@ -1,16 +1,64 @@
-# 醫學詞庫：一行一詞（# 開頭為註解）。Phase 5 依臨床科別擴充。
-# STT initial_prompt（Phase 3）與潤飾 prompt（Phase 1）共用這份。
+# 醫學詞庫：一行一詞（# 開頭為註解）。依臨床科別擴充。
+# STT initial_prompt 與潤飾 prompt 共用；initial_prompt 有長度上限，
+# 重要詞放前面（stt.py 會由前往後截斷）。
 SOAP
 CRP
 WBC
 ESR
+procalcitonin
 osteomyelitis
 OPAT
 elastomeric pump
 ceftriaxone
 vancomycin
 piperacillin-tazobactam
+meropenem
+cefazolin
+ceftazidime
+levofloxacin
+metronidazole
+teicoplanin
+daptomycin
 cellulitis
 bacteremia
+sepsis
+septic shock
+endocarditis
+pneumonia
+UTI
+abscess
+empyema
+MRSA
+MSSA
+E. coli
+Klebsiella
+Pseudomonas
+Enterococcus
+Candida
+blood culture
+susceptibility
+MIC
 empirical antibiotics
 de-escalation
+switch therapy
+IV to PO
+loading dose
+renal dosing
+creatinine
+eGFR
+AST
+ALT
+bilirubin
+albumin
+hemoglobin
+platelet
+sodium
+potassium
+NPO
+BID
+TID
+QD
+PRN
+follow up
+consult
+discharge

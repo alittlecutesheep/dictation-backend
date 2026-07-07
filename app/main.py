@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from . import stt
 from .config import settings
-from .polish import polish
+from .polish import polish, rewrite
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("dictation")
@@ -43,6 +43,8 @@ class PolishRequest(BaseModel):
     text: str
     app_context: str | None = None
     privacy_mode: bool = False
+    # Command Mode（Phase 5）：有值時 text 視為「原文」、command 為口述改寫指令
+    command: str | None = None
 
 
 @app.get("/health", dependencies=[Depends(require_token)])
@@ -56,7 +58,10 @@ async def polish_endpoint(req: PolishRequest) -> dict:
     if req.privacy_mode or settings.polish_provider == "none":
         return {"text": req.text}
     try:
-        cleaned = await polish(req.text, req.app_context)
+        if req.command and req.command.strip():
+            cleaned = await rewrite(req.text, req.command.strip(), req.app_context)
+        else:
+            cleaned = await polish(req.text, req.app_context)
     except Exception as e:
         log.warning("polish provider (%s) failed: %s", settings.polish_provider, e)
         raise HTTPException(status_code=502, detail=f"polish provider error: {e}")

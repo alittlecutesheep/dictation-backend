@@ -22,6 +22,11 @@ _model: WhisperModel | None = None
 _initial_prompt_cache: str | None = None
 
 
+# Whisper 的 initial_prompt 上限約 224 tokens，超過會被截斷；
+# 保守以字元數截斷（詞庫檔內重要詞放前面）。
+_INITIAL_PROMPT_MAX_CHARS = 400
+
+
 def _initial_prompt() -> str | None:
     global _initial_prompt_cache
     if _initial_prompt_cache is not None:
@@ -32,8 +37,16 @@ def _initial_prompt() -> str | None:
         _initial_prompt_cache = ""
         return None
     words = [w.strip() for w in lines if w.strip() and not w.strip().startswith("#")]
-    _initial_prompt_cache = "醫療聽寫，繁體中文與英文醫學名詞混用。常用詞：" + "、".join(words) if words else ""
-    return _initial_prompt_cache or None
+    if not words:
+        _initial_prompt_cache = ""
+        return None
+    prompt = "醫療聽寫，繁體中文與英文醫學名詞混用。常用詞："
+    for word in words:
+        if len(prompt) + len(word) + 1 > _INITIAL_PROMPT_MAX_CHARS:
+            break
+        prompt += word + "、"
+    _initial_prompt_cache = prompt.rstrip("、")
+    return _initial_prompt_cache
 
 
 def load_model() -> None:
