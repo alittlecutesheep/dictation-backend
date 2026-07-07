@@ -10,3 +10,9 @@ services:
       # 預設只綁 localhost；接上 Tailscale 後把 BIND_IP 改成 tailnet IP
       # （host shell 執行 `tailscale ip -4` 取得），不開公網 port（SPEC §2.4）
       - "${BIND_IP:-127.0.0.1}:${HOST_PORT:-8010}:8000"
+    volumes:
+      # Whisper 模型快取：rebuild 不重新下載
+      - hf-cache:/root/.cache/huggingface
+
+volumes:
+  hf-cache:
